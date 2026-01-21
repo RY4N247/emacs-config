@@ -4,4 +4,4 @@
 ![Auto Complete](autocomplete.png)
 - Copilot Integration
   
-![Copilot Integration](copilot.png)
+![Copilot Integration](copilot1.png)
