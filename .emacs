@@ -1,3 +1,27 @@
+;;Editor Settings
+(setq inhibit-startup-screen t) ;; Disable startup screen
+;; Global VS Code–style indentation
+(setq-default indent-tabs-mode nil)  ;; always use spaces
+(setq-default tab-width 4)           ;; 4 spaces everywhere
+(setq-default standard-indent 4)     ;; 4 spaces for auto-indent
+;;Same indentation for copilot suggestions
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (setq-local copilot--indentation-offset tab-width)))
+
+
+;; Put all backup files in one place
+(setq backup-directory-alist
+      `(("." . "~/.emacs.d/backups")))
+
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs.d/auto-saves/" t)))
+
+;; Create directories if they don’t exist
+(make-directory "~/.emacs.d/backups" t)
+(make-directory "~/.emacs.d/auto-saves" t)
+
+
 ;;Package Management Setup
 (require 'package)
 
@@ -19,12 +43,17 @@
   :ensure t)
 
 ;;==AI Agent==
-;;Copilot - node js required
+;;Copilot Bindings - node js required
 ;;https://github.com/copilot-emacs/copilot.el
+
 (use-package copilot
   :vc (:url "https://github.com/copilot-emacs/copilot.el"
-            :rev :newest
-            :branch "main"))
+            :branch "main")
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-mode-map
+              ("C-<tab>"     . copilot-accept-completion)
+              ("C-M-<tab>"   . copilot-accept-completion-by-word)
+              ("C-M-S-<tab>" . copilot-accept-completion-by-line)))
 
 
 ;;==Language Support==
